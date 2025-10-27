@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halloween Cow Goal</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Creepster&family=Fredoka:wght@600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: transparent;
+            font-family: 'Fredoka', sans-serif;
+            overflow: hidden;
+        }
+        
+        .container {
+            width: 600px;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .goal-wrapper {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            border: 4px solid #ff6b35;
+            border-radius: 30px;
+            padding: 25px;
+            box-shadow: 0 10px 40px rgba(255, 107, 53, 0.4),
+                        inset 0 0 20px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .goal-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 107, 53, 0.1) 0%, transparent 70%);
+            animation: pulse 3s ease-in-out infinite;
+        }
+        
+        .title {
+            font-family: 'Creepster', cursive;
+            font-size: 36px;
+            color: #ff6b35;
+            text-align: center;
+            margin-bottom: 15px;
+            text-shadow: 3px 3px 0px #000,
+                         0 0 20px rgba(255, 107, 53, 0.8);
+            position: relative;
+            z-index: 2;
+            letter-spacing: 2px;
+        }
+        
+        .cow-container {
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            font-size: 50px;
+            animation: float 3s ease-in-out infinite, wiggle 0.5s ease-in-out infinite;
+            z-index: 3;
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));
+        }
+        
+        .progress-container {
+            background: #0a0a0a;
+            border: 3px solid #ff6b35;
+            border-radius: 20px;
+            height: 50px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.8);
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, 
+                #ff6b35 0%, 
+                #ff8c42 25%, 
+                #ffa500 50%, 
+                #ff8c42 75%, 
+                #ff6b35 100%);
+            background-size: 200% 100%;
+            border-radius: 17px;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            box-shadow: 0 0 20px rgba(255, 107, 53, 0.6),
+                        inset 0 2px 10px rgba(255, 255, 255, 0.3);
+            animation: shimmer 2s linear infinite;
+        }
+        
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), transparent);
+            border-radius: 17px 17px 0 0;
+        }
+        
+        .amount-display {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 22px;
+            font-weight: 600;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8),
+                         0 0 10px rgba(255, 107, 53, 0.5);
+            z-index: 2;
+            letter-spacing: 1px;
+        }
+        
+        .ghost {
+            position: absolute;
+            font-size: 30px;
+            animation: ghostFloat 4s ease-in-out infinite;
+            opacity: 0.7;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+        }
+        
+        .ghost1 { top: 10px; right: 30px; animation-delay: 0s; }
+        .ghost2 { bottom: 15px; right: 50px; animation-delay: 1.5s; }
+        
+        .pumpkin {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 40px;
+            animation: pumpkinBounce 2s ease-in-out infinite;
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));
+        }
+        
+        .bat {
+            position: absolute;
+            top: 15px;
+            right: 80px;
+            font-size: 25px;
+            animation: batFly 3s linear infinite;
+        }
+        
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ffa500;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: sparkleAnim 1s ease-out forwards;
+            box-shadow: 0 0 6px #ffa500;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(-5deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+        
+        @keyframes wiggle {
+            0%, 100% { transform: translateY(0px) rotate(-5deg); }
+            25% { transform: translateY(-2px) rotate(-3deg); }
+            75% { transform: translateY(-2px) rotate(-7deg); }
+        }
+        
+        @keyframes ghostFloat {
+            0%, 100% { transform: translateY(0px) translateX(0px); opacity: 0.5; }
+            50% { transform: translateY(-15px) translateX(10px); opacity: 0.8; }
+        }
+        
+        @keyframes pumpkinBounce {
+            0%, 100% { transform: translateX(-50%) translateY(0px) rotate(0deg); }
+            50% { transform: translateX(-50%) translateY(-5px) rotate(5deg); }
+        }
+        
+        @keyframes batFly {
+            0% { transform: translateX(0px) translateY(0px) rotate(0deg); }
+            25% { transform: translateX(-20px) translateY(-10px) rotate(-10deg); }
+            50% { transform: translateX(-10px) translateY(5px) rotate(5deg); }
+            75% { transform: translateX(20px) translateY(-5px) rotate(-5deg); }
+            100% { transform: translateX(0px) translateY(0px) rotate(0deg); }
+        }
+        
+        @keyframes sparkleAnim {
+            0% {
+                transform: translateY(0) scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-50px) scale(1);
+                opacity: 0;
+            }
+        }
+        
+        .celebration {
+            animation: celebrate 0.6s ease-out;
+        }
+        
+        @keyframes celebrate {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.05) rotate(2deg); }
+            75% { transform: scale(1.05) rotate(-2deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="goal-wrapper">
+            <div class="cow-container">🐮</div>
+            <div class="ghost ghost1">👻</div>
+            <div class="ghost ghost2">👻</div>
+            <div class="bat">🦇</div>
+            
+            <div class="title">Spooky Moo Goal! 🎃</div>
+            
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+                <div class="amount-display" id="amountDisplay">0€ / 200€</div>
+            </div>
+            
+            <div class="pumpkin">🎃</div>
+        </div>
+    </div>
+
+    <script>
+        // Configurare
+        const TARGET = 200;
+        let currentAmount = 0;
+
+        // Funcție pentru a crea sparkles
+        function createSparkle(x, y) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.left = x + 'px';
+            sparkle.style.top = y + 'px';
+            document.body.appendChild(sparkle);
+            
+            setTimeout(() => sparkle.remove(), 1000);
+        }
+
+        // Funcție pentru a genera sparkles multiple
+        function generateSparkles() {
+            const wrapper = document.querySelector('.goal-wrapper');
+            const rect = wrapper.getBoundingClientRect();
+            
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const x = rect.left + Math.random() * rect.width;
+                    const y = rect.top + Math.random() * rect.height;
+                    createSparkle(x, y);
+                }, i * 100);
+            }
+        }
+
+        // Funcție pentru a updata goal-ul
+        function updateGoal(amount) {
+            const oldAmount = currentAmount;
+            currentAmount = Math.min(amount, TARGET);
+            
+            const percentage = (currentAmount / TARGET) * 100;
+            const progressBar = document.getElementById('progressBar');
+            const amountDisplay = document.getElementById('amountDisplay');
+            
+            progressBar.style.width = percentage + '%';
+            amountDisplay.textContent = `${currentAmount.toFixed(0)}€ / ${TARGET}€`;
+            
+            // Efect de celebrare când crește
+            if (amount > oldAmount) {
+                document.querySelector('.goal-wrapper').classList.add('celebration');
+                generateSparkles();
+                
+                setTimeout(() => {
+                    document.querySelector('.goal-wrapper').classList.remove('celebration');
+                }, 600);
+            }
+            
+            // Confetti când se atinge goal-ul
+            if (currentAmount >= TARGET && oldAmount < TARGET) {
+                celebrateGoalComplete();
+            }
+        }
+
+        // Funcție pentru celebrarea goal-ului complet
+        function celebrateGoalComplete() {
+            const wrapper = document.querySelector('.goal-wrapper');
+            
+            // Creează confetti
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const rect = wrapper.getBoundingClientRect();
+                    const x = rect.left + Math.random() * rect.width;
+                    const y = rect.top + Math.random() * rect.height;
+                    createSparkle(x, y);
+                }, i * 50);
+            }
+        }
+
+        // API pentru a primi update-uri (poate fi apelat din consolă sau din server)
+        window.updateGoalAmount = updateGoal;
+
+        // Simulare pentru testare - șterge sau comentează în producție
+        // Incrementează treptat pentru a vedea animațiile
+        let testAmount = 0;
+        setInterval(() => {
+            if (testAmount < TARGET) {
+                testAmount += Math.random() * 10;
+                updateGoal(testAmount);
+            }
+        }, 2000);
+
+        // Inițializare
+        updateGoal(0);
+
+        // Ascultă pentru update-uri externe (de la server)
+        // Poți folosi WebSocket sau polling
+        // Exemplu cu polling la fiecare 5 secunde:
+        /*
+        setInterval(async () => {
+            try {
+                const response = await fetch('https://tau-server.com/api/goal');
+                const data = await response.json();
+                updateGoal(data.current);
+            } catch (error) {
+                console.error('Error fetching goal:', error);
+            }
+        }, 5000);
+        */
+    </script>
+</body>
+</html>
