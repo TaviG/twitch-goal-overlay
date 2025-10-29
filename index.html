@@ -315,36 +315,27 @@
             }
         }
 
-        // API pentru a primi update-uri (poate fi apelat din consolă sau din server)
+        // API pentru a primi update-uri
         window.updateGoalAmount = updateGoal;
 
-        // Simulare pentru testare - șterge sau comentează în producție
-        // Incrementează treptat pentru a vedea animațiile
-        let testAmount = 0;
-        setInterval(() => {
-            if (testAmount < TARGET) {
-                testAmount += Math.random() * 10;
-                updateGoal(testAmount);
-            }
-        }, 2000);
-
-        // Inițializare
-        updateGoal(0);
-
-        // Ascultă pentru update-uri externe (de la server)
-        // Poți folosi WebSocket sau polling
-        // Exemplu cu polling la fiecare 5 secunde:
-        /*
-        setInterval(async () => {
+        // Fetch goal data from GitHub Gist
+        const GIST_URL = 'https://gist.githubusercontent.com/TaviG/2ebf73bb886bd634c57e59724a8dd485/raw/goal-data.json';
+        
+        async function fetchGoalData() {
             try {
-                const response = await fetch('https://tau-server.com/api/goal');
+                const response = await fetch(GIST_URL + '?t=' + Date.now()); // Cache busting
                 const data = await response.json();
                 updateGoal(data.current);
             } catch (error) {
-                console.error('Error fetching goal:', error);
+                console.error('Error fetching goal data:', error);
             }
-        }, 5000);
-        */
+        }
+        
+        // Initial fetch
+        fetchGoalData();
+        
+        // Poll every 5 seconds for updates
+        setInterval(fetchGoalData, 5000);
     </script>
 </body>
 </html>
