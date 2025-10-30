@@ -235,7 +235,7 @@
             
             <div class="progress-container">
                 <div class="progress-bar" id="progressBar"></div>
-                <div class="amount-display" id="amountDisplay">0€ / 200€</div>
+                <div class="amount-display" id="amountDisplay">0.00€ / 200€</div>
             </div>
             
             <div class="pumpkin">🎃</div>
@@ -282,7 +282,7 @@
             const amountDisplay = document.getElementById('amountDisplay');
             
             progressBar.style.width = percentage + '%';
-            amountDisplay.textContent = `${currentAmount.toFixed(0)}€ / ${TARGET}€`;
+            amountDisplay.textContent = `${currentAmount.toFixed(2)}€ / ${TARGET}€`;
             
             // Efect de celebrare când crește
             if (amount > oldAmount) {
@@ -338,4 +338,5 @@
         setInterval(fetchGoalData, 5000);
     </script>
 </body>
+
 </html>
